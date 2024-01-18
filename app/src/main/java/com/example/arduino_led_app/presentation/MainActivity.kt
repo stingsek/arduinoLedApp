@@ -6,18 +6,14 @@ import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.navigation.ui.AppBarConfiguration
-import androidx.activity.compose.setContent
-import androidx.activity.result.contract.ActivityResultContract
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.example.arduino_led_app.databinding.ActivityMainBinding
-import com.example.arduino_led_app.presentation.BluetoothViewModel
+import androidx.activity.compose.setContent
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.annotation.RequiresApi
 import com.example.arduino_led_app.presentation.components.DeviceScreen
 import com.example.arduino_led_app.ui.theme.ArduinoLedAppTheme
 import dagger.hilt.android.AndroidEntryPoint
@@ -25,11 +21,10 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
-    private val bluetoothManager by lazy{
+    private val bluetoothManager by lazy {
         applicationContext.getSystemService(BluetoothManager::class.java)
     }
 
-    //initiate a connection, a scan and paired and scanned devices view
     private val bluetoothAdapter by lazy {
         bluetoothManager?.adapter
     }
@@ -37,59 +32,53 @@ class MainActivity : AppCompatActivity() {
     private val isBluetoothEnabled: Boolean
         get() = bluetoothAdapter?.isEnabled == true
 
+    @RequiresApi(Build.VERSION_CODES.S)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val enableBluetoothLauncher = registerForActivityResult(
-            ActivityResultContracts.StartActivityForResult()
-        )
-        {/* Not needed */} //if the user enabled permission after showing the dialog use this result
+        // Check if the Android version is 10 or above before requesting permissions
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            val enableBluetoothLauncher = registerForActivityResult(
+                ActivityResultContracts.StartActivityForResult()
+            ) { /* Handle enable Bluetooth result here if needed */ }
 
-        val permissionLauncher = registerForActivityResult(
-            ActivityResultContracts.RequestMultiplePermissions()
-        )
-        {
-                perms ->
-            val canEnableBluetooth = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-                perms[android.Manifest.permission.BLUETOOTH_CONNECT] == true
-            } else {
-                true
+            val permissionLauncher = registerForActivityResult(
+                ActivityResultContracts.RequestMultiplePermissions()
+            ) { perms ->
+                val canEnableBluetooth = perms[android.Manifest.permission.BLUETOOTH] == true
+                        && perms[android.Manifest.permission.BLUETOOTH_ADMIN] == true
+
+                if (canEnableBluetooth && !isBluetoothEnabled) {
+                    enableBluetoothLauncher.launch(
+                        Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE)
+                    )
+                }
             }
-            if(canEnableBluetooth && !isBluetoothEnabled)
-            {
-                enableBluetoothLauncher.launch(
-                    Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE)
-                )
 
-            }
-        }
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
             permissionLauncher.launch(
                 arrayOf(
+                    android.Manifest.permission.BLUETOOTH,
+                    android.Manifest.permission.BLUETOOTH_ADMIN,
+                    android.Manifest.permission.ACCESS_FINE_LOCATION,
+                    android.Manifest.permission.BLUETOOTH_CONNECT,
                     android.Manifest.permission.BLUETOOTH_SCAN,
-                    android.Manifest.permission.BLUETOOTH_CONNECT
                 )
             )
         }
 
-        setContent{
-            ArduinoLedAppTheme{
+        setContent {
+            ArduinoLedAppTheme {
                 val viewModel = hiltViewModel<BluetoothViewModel>()
                 val state by viewModel.state.collectAsState()
 
-
-                Surface(color=MaterialTheme.colorScheme.background) {
-                DeviceScreen(
-                    state = state,
-                    onStartScan = viewModel::startScan,
-                    onStopScan = viewModel::stopScan
-                )
-
+                Surface(color = MaterialTheme.colorScheme.background) {
+                    DeviceScreen(
+                        state = state,
+                        onStartScan = viewModel::startScan,
+                        onStopScan = viewModel::stopScan
+                    )
                 }
-
             }
         }
-
     }
 }
