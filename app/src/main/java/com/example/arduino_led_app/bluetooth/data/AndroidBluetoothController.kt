@@ -9,6 +9,8 @@ import androidx.core.content.ContextCompat.RECEIVER_EXPORTED
 import androidx.core.content.ContextCompat.registerReceiver
 import com.example.arduino_led_app.bluetooth.domain.BluetoothController
 import com.example.arduino_led_app.bluetooth.BluetoothDeviceDomain
+import com.example.arduino_led_app.utils.hasBluetoothConnectPermission
+import com.example.arduino_led_app.utils.hasBluetoothScanPermission
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -49,7 +51,7 @@ class AndroidBluetoothController(
     }
 
     override fun startDiscovery() {
-        if (!hasPermission(android.Manifest.permission.BLUETOOTH_SCAN))
+        if (!hasBluetoothScanPermission(context))
             return
 
         registerReceiver(
@@ -64,7 +66,7 @@ class AndroidBluetoothController(
     }
 
     override fun stopDiscovery() {
-        if (!hasPermission(android.Manifest.permission.BLUETOOTH_SCAN))
+        if (!hasBluetoothScanPermission(context))
             return
 
         bluetoothAdapter?.cancelDiscovery()
@@ -75,15 +77,11 @@ class AndroidBluetoothController(
     }
 
     private fun updatePairedDevices() {
-        if (!hasPermission(android.Manifest.permission.BLUETOOTH_CONNECT))
+        if (!hasBluetoothConnectPermission(context))
             return
 
         bluetoothAdapter
             ?.bondedDevices?.map { it.toBluetoothDeviceDomain() }
             ?.also { devices -> _pairedDevices.update { devices } }
-    }
-
-    private fun hasPermission(permission: String): Boolean {
-        return context.checkSelfPermission(permission) == android.content.pm.PackageManager.PERMISSION_GRANTED
     }
 }

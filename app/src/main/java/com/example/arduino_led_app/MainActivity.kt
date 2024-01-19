@@ -1,4 +1,4 @@
-package com.example.arduino_led_app.presentation
+package com.example.arduino_led_app
 
 import android.bluetooth.BluetoothAdapter
 import android.bluetooth.BluetoothManager
@@ -8,14 +8,11 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.activity.compose.setContent
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
-import com.example.arduino_led_app.presentation.components.DeviceScreen
 import com.example.arduino_led_app.ui.theme.ArduinoLedAppTheme
+import com.example.arduino_led_app.utils.canEnableBluetooth
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -45,8 +42,7 @@ class MainActivity : AppCompatActivity() {
             val permissionLauncher = registerForActivityResult(
                 ActivityResultContracts.RequestMultiplePermissions()
             ) { perms ->
-                val canEnableBluetooth = perms[android.Manifest.permission.BLUETOOTH] == true
-                        && perms[android.Manifest.permission.BLUETOOTH_ADMIN] == true
+                val canEnableBluetooth = canEnableBluetooth(perms)
 
                 if (canEnableBluetooth && !isBluetoothEnabled) {
                     enableBluetoothLauncher.launch(
@@ -68,15 +64,8 @@ class MainActivity : AppCompatActivity() {
 
         setContent {
             ArduinoLedAppTheme {
-                val viewModel = hiltViewModel<BluetoothViewModel>()
-                val state by viewModel.state.collectAsState()
-
                 Surface(color = MaterialTheme.colorScheme.background) {
-                    DeviceScreen(
-                        state = state,
-                        onStartScan = viewModel::startScan,
-                        onStopScan = viewModel::stopScan
-                    )
+                    Navigation()
                 }
             }
         }

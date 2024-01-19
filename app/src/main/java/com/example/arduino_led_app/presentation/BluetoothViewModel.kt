@@ -3,7 +3,6 @@ package com.example.arduino_led_app.presentation
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.arduino_led_app.bluetooth.domain.BluetoothController
-import com.example.arduino_led_app.presentation.BluetoothUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -30,13 +29,11 @@ class BluetoothViewModel @Inject constructor(
 
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000),_state.value)
 
-    fun startScan()
-    {
+    fun startScan() {
         bluetoothController.startDiscovery()
     }
 
-    fun stopScan()
-    {
+    fun stopScan() {
         bluetoothController.stopDiscovery()
     }
 }

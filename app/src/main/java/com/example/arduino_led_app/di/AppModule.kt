@@ -16,11 +16,7 @@ object AppModule {
 
     @Provides
     @Singleton
-
-    fun provideBluetoothController(
-        @ApplicationContext context : Context
-    ) : BluetoothController
-    {
+    fun provideBluetoothController(@ApplicationContext context : Context) : BluetoothController {
         return AndroidBluetoothController(context)
     }
 }

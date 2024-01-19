@@ -1,4 +1,4 @@
-package com.example.arduino_led_app.presentation.components
+package com.example.arduino_led_app.ui.screens
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -12,45 +12,44 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.arduino_led_app.presentation.BluetoothUiState
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.arduino_led_app.bluetooth.domain.BluetoothDevice
+import com.example.arduino_led_app.presentation.BluetoothViewModel
 
 @Composable
-fun DeviceScreen(
-    state: BluetoothUiState,
-    onStartScan: () -> Unit,
-    onStopScan: () -> Unit
-)
-{
+fun BluetoothDiscoverScreen() {
+    val viewModel = hiltViewModel<BluetoothViewModel>()
+    val state by viewModel.state.collectAsState()
+
     Column(
         modifier = Modifier.fillMaxSize()
     ) {
         BluetoothDeviceList(
             pairedDevices = state.pairedDevices,
             scannedDevices = state.scannedDevices,
-            onClick = {}, modifier = Modifier.fillMaxWidth().weight(1f)
+            onClick = {},
+            modifier = Modifier
+                .fillMaxWidth()
+                .weight(1f)
         )
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceAround
         )
         {
-            Button(
-                onClick = onStartScan
-            )
-            {
+            Button(onClick = { viewModel.startScan() }) {
                 Text(text = "Start Scan")
             }
 
-            Button(onClick = onStopScan)
-            {
+            Button(onClick = { viewModel.stopScan() }) {
                 Text(text = "Stop Scan")
             }
-
         }
     }
 
@@ -61,10 +60,9 @@ fun DeviceScreen(
 fun BluetoothDeviceList(
     pairedDevices: List<BluetoothDevice>,
     scannedDevices: List<BluetoothDevice>,
-    onClick : (BluetoothDevice) -> Unit,
+    onClick: (BluetoothDevice) -> Unit,
     modifier: Modifier = Modifier
-)
-{
+) {
     LazyColumn(
         modifier = modifier
     ) {
@@ -76,13 +74,13 @@ fun BluetoothDeviceList(
                 modifier = Modifier.padding(16.dp)
             )
         }
-            items(pairedDevices){ device ->
-                Text(text = device.toString() ?: "(Unnamed Device)",
+        items(pairedDevices) { device ->
+            Text(text = device.toString() ?: "(Unnamed Device)",
                 modifier = Modifier
                     .fillMaxWidth()
                     .clickable { onClick(device) }
                     .padding(16.dp))
-            }
+        }
 
         item {
             Text(
@@ -92,15 +90,14 @@ fun BluetoothDeviceList(
                 modifier = Modifier.padding(16.dp)
             )
         }
-        items(scannedDevices){ device ->
-            Text(text = device.toString()?: "(Unnamed Device)",
+        items(scannedDevices) { device ->
+            Text(text = device.toString() ?: "(Unnamed Device)",
                 modifier = Modifier
                     .fillMaxWidth()
                     .clickable { onClick(device) }
                     .padding(16.dp))
         }
-
-        }
     }
+}
 
 
