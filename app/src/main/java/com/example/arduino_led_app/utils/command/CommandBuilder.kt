@@ -4,7 +4,7 @@ class CommandBuilder {
 
     private val commands: MutableList<String> = mutableListOf()
 
-    fun buildString(): String {
+    private fun buildString(): String {
         val commands = commands.toMutableList()
         return appendSteeringCommands(commands.joinToString(separator = SteeringCommand.END.value))
     }
@@ -13,13 +13,17 @@ class CommandBuilder {
         return buildString().toCharArray()
     }
 
+    fun buildByteArray(): ByteArray{
+        return buildString().encodeToByteArray()
+    }
+
     fun appendFunction(functionValue: FunctionValue): CommandBuilder {
         val command = parseVariable(VariablePrefix.FUNCTION, functionValue.value)
         commands.add(command)
         return this
     }
 
-    fun appendVariable(variablePrefix: VariablePrefix, value: Int): CommandBuilder {
+    private fun appendVariable(variablePrefix: VariablePrefix, value: Int): CommandBuilder {
         val command = parseVariable(variablePrefix, value)
         commands.add(command)
         return this

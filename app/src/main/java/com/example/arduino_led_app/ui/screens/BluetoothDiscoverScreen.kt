@@ -12,28 +12,38 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.ViewModel
 import com.example.arduino_led_app.bluetooth.domain.BluetoothDevice
+import com.example.arduino_led_app.presentation.BluetoothUiState
 import com.example.arduino_led_app.presentation.BluetoothViewModel
+import kotlinx.coroutines.flow.StateFlow
 
 @Composable
-fun BluetoothDiscoverScreen() {
-    val viewModel = hiltViewModel<BluetoothViewModel>()
-    val state by viewModel.state.collectAsState()
-
+fun BluetoothDiscoverScreen(
+    state: BluetoothUiState,
+    onStartScan: () -> Unit,
+    onStopScan: () -> Unit,
+    onStartServer: () -> Unit,
+    onDeviceClick: (BluetoothDevice) -> Unit
+) {
     Column(
-        modifier = Modifier.fillMaxSize()
+        modifier = Modifier
+            .fillMaxSize()
     ) {
         BluetoothDeviceList(
             pairedDevices = state.pairedDevices,
             scannedDevices = state.scannedDevices,
-            onClick = {},
+            onClick = onDeviceClick,
             modifier = Modifier
                 .fillMaxWidth()
                 .weight(1f)
@@ -41,19 +51,18 @@ fun BluetoothDiscoverScreen() {
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceAround
-        )
-        {
-            Button(onClick = { viewModel.startScan() }) {
-                Text(text = "Start Scan")
+        ) {
+            Button(onClick = onStartScan) {
+                Text(text = "Start scan")
             }
-
-            Button(onClick = { viewModel.stopScan() }) {
-                Text(text = "Stop Scan")
+            Button(onClick = onStopScan) {
+                Text(text = "Stop scan")
+            }
+            Button(onClick = onStartServer) {
+                Text(text = "Start server")
             }
         }
     }
-
-
 }
 
 @Composable
@@ -75,11 +84,13 @@ fun BluetoothDeviceList(
             )
         }
         items(pairedDevices) { device ->
-            Text(text = device.toString() ?: "(Unnamed Device)",
+            Text(
+                text = device.name ?: "(No name)",
                 modifier = Modifier
                     .fillMaxWidth()
                     .clickable { onClick(device) }
-                    .padding(16.dp))
+                    .padding(16.dp)
+            )
         }
 
         item {
@@ -91,13 +102,14 @@ fun BluetoothDeviceList(
             )
         }
         items(scannedDevices) { device ->
-            Text(text = device.toString() ?: "(Unnamed Device)",
+            Text(
+                text = device.name ?: "(No name)",
                 modifier = Modifier
                     .fillMaxWidth()
                     .clickable { onClick(device) }
-                    .padding(16.dp))
+                    .padding(16.dp)
+            )
         }
     }
 }
-
 

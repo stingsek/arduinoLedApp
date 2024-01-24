@@ -16,6 +16,9 @@ interface BluetoothController {
     //connects to device that has a launched server
     fun connectToDevice(device: BluetoothDevice) : Flow<ConnectionResult>
 
+
+    suspend fun trySendCommand(command : String) : String?
+
     fun closeConnection()
     fun startDiscovery()
     fun stopDiscovery()

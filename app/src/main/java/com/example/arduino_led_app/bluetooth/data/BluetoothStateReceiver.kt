@@ -7,18 +7,18 @@ import android.content.Intent
 import android.os.Build
 
 class BluetoothStateReceiver(
-    private val onStateChanged: (isConnected: Boolean, android.bluetooth.BluetoothDevice) -> Unit
+    private val onStateChanged: (isConnected: Boolean, BluetoothDevice) -> Unit
 ): BroadcastReceiver() {
 
 
     override fun onReceive(context: Context?, intent: Intent?) {
         val device = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             intent?.getParcelableExtra(
-                android.bluetooth.BluetoothDevice.EXTRA_DEVICE,
-                android.bluetooth.BluetoothDevice::class.java
+                BluetoothDevice.EXTRA_DEVICE,
+                BluetoothDevice::class.java
             )
         } else {
-            intent?.getParcelableExtra(android.bluetooth.BluetoothDevice.EXTRA_DEVICE)
+            intent?.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE)
         }
         when(intent?.action){
             android.bluetooth.BluetoothDevice.ACTION_ACL_CONNECTED -> {
