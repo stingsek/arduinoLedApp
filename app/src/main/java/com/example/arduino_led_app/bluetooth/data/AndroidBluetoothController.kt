@@ -179,7 +179,7 @@ class AndroidBluetoothController(
                 currentClientSocket = bluetoothAdapter
                     ?.getRemoteDevice("00:20:12:08:8C:5B")
                     ?.createRfcommSocketToServiceRecord(
-                        UUID.fromString("00001101-0000-1000-8000-00805F9B34FB")
+                        UUID.fromString(device.address)
                     )
                 stopDiscovery()
 
@@ -188,6 +188,7 @@ class AndroidBluetoothController(
                     do {
                         try {
                             socket.connect()
+                            dataTransferService = BluetoothDataTransferService(socket)
                             emit(ConnectionResult.ConnectionEstablished)
                         } catch(e: IOException) {
                             Log.e("Connection error", e.toString())
