@@ -8,8 +8,9 @@ import android.bluetooth.BluetoothServerSocket
 import android.bluetooth.BluetoothSocket
 import android.content.Context
 import android.content.IntentFilter
-import com.example.arduino_led_app.bluetooth.domain.BluetoothController
+import android.util.Log
 import com.example.arduino_led_app.bluetooth.BluetoothDeviceDomain
+import com.example.arduino_led_app.bluetooth.domain.BluetoothController
 import com.example.arduino_led_app.bluetooth.domain.ConnectionResult
 import com.example.arduino_led_app.utils.hasBluetoothConnectPermission
 import com.example.arduino_led_app.utils.hasBluetoothScanPermission
@@ -168,26 +169,38 @@ class AndroidBluetoothController(
                 throw SecurityException("No BLUETOOTH_CONNECT permission")
             }
 
-            currentClientSocket = bluetoothAdapter
-                ?.getRemoteDevice(device.address)
-                ?.createRfcommSocketToServiceRecord(
-                    UUID.fromString(SERVICE_UUID)
-                )
-            stopDiscovery()
+            if(bluetoothAdapter == null) {
+                Log.e("Bluetooth adapter", "Bluetooth adapter is null")
+            }
+            else if(bluetoothAdapter!!.getRemoteDevice(device.address) == null) {
+                Log.e("Bluetooth device", "Bluetooth device is null")
+            }
+            else {
+                currentClientSocket = bluetoothAdapter
+                    ?.getRemoteDevice("00:20:12:08:8C:5B")
+                    ?.createRfcommSocketToServiceRecord(
+                        UUID.fromString("00001101-0000-1000-8000-00805F9B34FB")
+                    )
+                stopDiscovery()
 
-            currentClientSocket?.let { socket ->
-                try {
-                    socket.connect()
-                    emit(ConnectionResult.ConnectionEstablished)
-
-                } catch(e: IOException) {
-                    socket.close()
-                    currentClientSocket = null
-                    emit(ConnectionResult.Error("Connection was interrupted"))
+                currentClientSocket?.let { socket ->
+                    var counter = 0
+                    do {
+                        try {
+                            socket.connect()
+                            emit(ConnectionResult.ConnectionEstablished)
+                        } catch(e: IOException) {
+                            Log.e("Connection error", e.toString())
+                            socket.close()
+                            currentClientSocket = null
+                            emit(ConnectionResult.Error("Connection was interrupted"))
+                            counter++
+                        }
+                    } while(!socket.isConnected && counter < 10)
                 }
             }
         }.onCompletion {
-            closeConnection()
+//            closeConnection()
         }.flowOn(Dispatchers.IO)
     }
 
