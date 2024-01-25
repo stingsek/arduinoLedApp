@@ -24,7 +24,7 @@ import com.example.arduino_led_app.ui.composables.CustomHeader
 import com.example.arduino_led_app.ui.composables.CustomSwitch
 
 @Composable
-fun RainbowScreen(onCommandChange: (String) -> Unit
+fun RainbowScreen(onCommandChange: (String) -> Unit = {}
 )
 {
     Row(

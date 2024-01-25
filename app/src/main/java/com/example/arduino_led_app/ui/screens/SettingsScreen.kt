@@ -20,7 +20,7 @@ import com.example.arduino_led_app.ui.composables.CustomHeader
 import com.example.arduino_led_app.ui.composables.CustomSlider
 
 @Composable
-fun SettingsScreen(onCommandChange: (String) -> Unit)
+fun SettingsScreen(onCommandChange: (String) -> Unit = {})
 {
 
     Row(

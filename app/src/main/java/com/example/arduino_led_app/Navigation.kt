@@ -53,7 +53,7 @@ fun Navigation(state: BluetoothUiState,
         }
         composable(route = Screen.HomeScreen.route)
         {
-            HomeScreen(navController,onSendClicked)
+            HomeScreen(navController, onSendClicked)
         }
         composable(route = Screen.RainbowScreen.route){
             RainbowScreen()

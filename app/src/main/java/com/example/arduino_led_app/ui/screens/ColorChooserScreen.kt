@@ -25,7 +25,7 @@ import com.github.skydoves.colorpicker.compose.HsvColorPicker
 import com.github.skydoves.colorpicker.compose.rememberColorPickerController
 
 @Composable
-fun ColorChooserScreen(onCommandChange: (String) -> Unit
+fun ColorChooserScreen(onCommandChange: (String) -> Unit = {}
 )
 {
     val controller = rememberColorPickerController()
