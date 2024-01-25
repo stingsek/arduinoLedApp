@@ -116,17 +116,16 @@ class MainActivity : ComponentActivity() {
                         }
                         state.isConnected ->
                         {
-
+                            Navigation(state,viewModel::startScan,viewModel::stopScan,viewModel::waitForIncomingConnections,viewModel::connectToDevice, viewModel::sendCommand)
                         }
                         else -> {
-//                            BluetoothDiscoverScreen(
-//                                state = state,
-//                                onStartScan = viewModel::startScan,
-//                                onStopScan = viewModel::stopScan,
-//                                onDeviceClick = viewModel::connectToDevice,
-//                                onStartServer = viewModel::waitForIncomingConnections
-//                            )
-                            Navigation(state,viewModel::startScan,viewModel::stopScan,viewModel::waitForIncomingConnections,viewModel::connectToDevice)
+                            BluetoothDiscoverScreen(
+                                state = state,
+                                onStartScan = viewModel::startScan,
+                                onStopScan = viewModel::stopScan,
+                                onDeviceClick = viewModel::connectToDevice,
+                                onStartServer = viewModel::waitForIncomingConnections
+                            )
                         }
                     }
                 }

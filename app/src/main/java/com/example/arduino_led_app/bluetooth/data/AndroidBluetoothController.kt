@@ -184,6 +184,7 @@ class AndroidBluetoothController(
                 try {
                     socket.connect()
                     emit(ConnectionResult.ConnectionEstablished)
+
                 } catch(e: IOException) {
                     socket.close()
                     currentClientSocket = null

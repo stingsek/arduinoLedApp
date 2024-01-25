@@ -25,7 +25,7 @@ import com.github.skydoves.colorpicker.compose.HsvColorPicker
 import com.github.skydoves.colorpicker.compose.rememberColorPickerController
 
 @Composable
-fun ColorChooserScreen(
+fun ColorChooserScreen(onCommandChange: (String) -> Unit
 )
 {
     val controller = rememberColorPickerController()
@@ -95,3 +95,4 @@ fun Color.toRgbInt(): Triple<Int, Int, Int> {
 
     return Triple(redInt, greenInt, blueInt)
 }
+

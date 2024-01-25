@@ -27,6 +27,8 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import com.example.arduino_led_app.ui.composables.BottomNavigationItem
@@ -41,7 +43,7 @@ import kotlin.math.absoluteValue
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeScreen(navController: NavController) {
+fun HomeScreen(navController: NavController, onSendClicked: (String) -> Unit) {
 
     val items = listOf(
         BottomNavigationItem(
@@ -69,11 +71,28 @@ fun HomeScreen(navController: NavController) {
         mutableIntStateOf(0)
     }
 
+    val command = remember {
+        mutableStateOf("dupaTEST")
+    }
+
+    fun onCommandChange(newCommand : String)
+    {
+        command.value = newCommand
+    }
+
     Surface(
         color = MaterialTheme.colorScheme.background
     ) {
         Scaffold(
-            floatingActionButton = { if (selectedItemIndex.absoluteValue != 0) SendButton() },
+            floatingActionButton = { if (selectedItemIndex.absoluteValue != 0) SendButton {
+                if(command.value.isNotEmpty())
+                {
+                    onSendClicked(
+                        command.value
+                    )
+                }
+            }
+            },
             floatingActionButtonPosition = FabPosition.End,
             bottomBar = {
                 NavigationBar(containerColor = Color(0xFFFC7331)) {
@@ -122,13 +141,13 @@ fun HomeScreen(navController: NavController) {
         { innerPadding ->
             when (items[selectedItemIndex].title) {
                 "Color" -> {
-                    ColorChooserScreen()
+                    ColorChooserScreen { onCommandChange(it) }
                 }
                 "Rainbow" -> {
-                    RainbowScreen()
+                    RainbowScreen { onCommandChange(it) }
                 }
                 "Settings" -> {
-                    SettingsScreen()
+                    SettingsScreen { onCommandChange(it) }
                 }
                 else ->
                 {
