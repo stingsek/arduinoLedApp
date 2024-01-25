@@ -23,7 +23,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.arduino_led_app.presentation.BluetoothViewModel
-import com.example.arduino_led_app.ui.screens.BluetoothDiscoverScreen
 import com.example.arduino_led_app.ui.theme.ArduinoLedAppTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -123,14 +122,14 @@ class MainActivity : ComponentActivity() {
 
                         }
                         else -> {
-                            BluetoothDiscoverScreen(
-                                state = state,
-                                onStartScan = viewModel::startScan,
-                                onStopScan = viewModel::stopScan,
-                                onDeviceClick = viewModel::connectToDevice,
-                                onStartServer = viewModel::waitForIncomingConnections
-                            )
-//                            Navigation(state,viewModel::startScan,viewModel::stopScan,viewModel::waitForIncomingConnections,viewModel::connectToDevice)
+//                            BluetoothDiscoverScreen(
+//                                state = state,
+//                                onStartScan = viewModel::startScan,
+//                                onStopScan = viewModel::stopScan,
+//                                onDeviceClick = viewModel::connectToDevice,
+//                                onStartServer = viewModel::waitForIncomingConnections
+//                            )
+                            Navigation(state,viewModel::startScan,viewModel::stopScan,viewModel::waitForIncomingConnections,viewModel::connectToDevice)
                         }
                     }
                 }
