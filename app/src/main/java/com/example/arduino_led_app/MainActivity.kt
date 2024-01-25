@@ -23,6 +23,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.arduino_led_app.presentation.BluetoothViewModel
+import com.example.arduino_led_app.ui.screens.BluetoothDiscoverScreen
 import com.example.arduino_led_app.ui.theme.ArduinoLedAppTheme
 import dagger.hilt.android.AndroidEntryPoint
 
