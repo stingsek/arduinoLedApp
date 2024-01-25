@@ -10,14 +10,11 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ColorLens
+import androidx.compose.material.icons.filled.Animation
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.Stable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.input.pointer.PointerIcon.Companion.Text
 import androidx.compose.ui.unit.dp
 import com.example.arduino_led_app.ui.composables.CustomHeader
 import com.github.skydoves.colorpicker.compose.AlphaTile
@@ -25,11 +22,10 @@ import com.github.skydoves.colorpicker.compose.HsvColorPicker
 import com.github.skydoves.colorpicker.compose.rememberColorPickerController
 
 @Composable
-fun ColorChooserScreen(
-)
+fun SettingsScreen()
 {
     val controller = rememberColorPickerController()
-
+    controller.selectCenter(true)
 
     Column(
         modifier = Modifier
@@ -42,7 +38,7 @@ fun ColorChooserScreen(
             verticalAlignment = Alignment.CenterVertically
         )
         {
-            CustomHeader(text = "Choose Color", imageVector = Icons.Filled.ColorLens)
+            CustomHeader(text = "Rainbow", imageVector = Icons.Filled.Animation)
         }
 
         HsvColorPicker(
@@ -73,15 +69,4 @@ fun ColorChooserScreen(
         }
     }
 
-
-}
-
-@Stable
-fun Color.toRgbInt(): Triple<Int, Int, Int> {
-
-    val redInt = (red * 255.0f).toInt()
-    val greenInt = (green * 255.0f).toInt()
-    val blueInt = (blue * 255.0f).toInt()
-
-    return Triple(redInt, greenInt, blueInt)
 }

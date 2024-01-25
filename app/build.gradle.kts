@@ -55,10 +55,13 @@ android {
 
 dependencies {
     implementation("com.google.dagger:hilt-android:2.50")
+    implementation("androidx.camera:camera-core:1.3.1")
+    implementation("androidx.compose.ui:ui-tooling-preview-android:1.5.4")
     annotationProcessor("com.google.dagger:hilt-compiler:2.50")
     androidTestImplementation("com.google.dagger:hilt-android-testing:2.50")
     androidTestAnnotationProcessor("com.google.dagger:hilt-compiler:2.50")
     testImplementation("com.google.dagger:hilt-android-testing:2.50")
+    debugImplementation("androidx.compose.ui:ui-tooling:1.5.4")
     testAnnotationProcessor("com.google.dagger:hilt-compiler:2.50")
     implementation("androidx.compose.compiler:compiler:1.5.8")
     implementation("androidx.compose.ui:ui:1.5.4")
@@ -75,6 +78,9 @@ dependencies {
     implementation("androidx.navigation:navigation-ui-ktx:2.7.6")
     implementation("androidx.navigation:navigation-compose:2.7.6")
     implementation("androidx.lifecycle:lifecycle-runtime-compose:2.7.0")
+    implementation("com.github.skydoves:colorpicker-compose:1.0.0")
+    implementation("androidx.compose.material:material-icons-core:<1.5.4>")
+    implementation("androidx.compose.material:material-icons-extended:<1.5.4>")
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")

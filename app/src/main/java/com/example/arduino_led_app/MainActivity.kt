@@ -79,11 +79,6 @@ class MainActivity : ComponentActivity() {
             ArduinoLedAppTheme{
                 val viewModel = hiltViewModel<BluetoothViewModel>()
                 val state by viewModel.state.collectAsState()
-                val navController = rememberNavController()
-                NavHost(navController = navController, startDestination = "bluetoothScreen")
-                {
-
-                }
 
                 LaunchedEffect(key1 = state.errorMessage) {
                     state.errorMessage?.let { message ->
@@ -121,16 +116,17 @@ class MainActivity : ComponentActivity() {
                         }
                         state.isConnected ->
                         {
-                            Navigation(state, onDisconnect = viewModel::disconnectFromDevice, onSendCommand = viewModel::sendCommand)
+
                         }
                         else -> {
-                            BluetoothDiscoverScreen(
-                                state = state,
-                                onStartScan = viewModel::startScan,
-                                onStopScan = viewModel::stopScan,
-                                onDeviceClick = viewModel::connectToDevice,
-                                onStartServer = viewModel::waitForIncomingConnections
-                            )
+//                            BluetoothDiscoverScreen(
+//                                state = state,
+//                                onStartScan = viewModel::startScan,
+//                                onStopScan = viewModel::stopScan,
+//                                onDeviceClick = viewModel::connectToDevice,
+//                                onStartServer = viewModel::waitForIncomingConnections
+//                            )
+                            Navigation(state,viewModel::startScan,viewModel::stopScan,viewModel::waitForIncomingConnections,viewModel::connectToDevice)
                         }
                     }
                 }
