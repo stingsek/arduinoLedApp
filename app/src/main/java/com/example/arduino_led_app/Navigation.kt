@@ -14,6 +14,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.arduino_led_app.bluetooth.domain.BluetoothDevice
 import com.example.arduino_led_app.presentation.BluetoothUiState
 import com.example.arduino_led_app.presentation.BluetoothViewModel
+import com.example.arduino_led_app.ui.screens.AppInfoScreen
 import com.example.arduino_led_app.ui.screens.BluetoothDiscoverScreen
 import com.example.arduino_led_app.ui.screens.ColorChooserScreen
 import com.example.arduino_led_app.ui.screens.HomeScreen
@@ -58,6 +59,9 @@ fun Navigation(state: BluetoothUiState,
         }
         composable(route = Screen.SettingsScreen.route){
             SettingsScreen()
+        }
+        composable(route = Screen.AppInfoScreen.route){
+            AppInfoScreen()
         }
 
 //        navigation(

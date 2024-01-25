@@ -1,75 +1,70 @@
 package com.example.arduino_led_app.ui.screens
 
-import android.util.Log
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Animation
-import androidx.compose.material.icons.filled.ColorLens
+import androidx.compose.material.icons.filled.ArrowLeft
+import androidx.compose.material.icons.filled.ArrowRight
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.Stable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import com.example.arduino_led_app.R
 import com.example.arduino_led_app.ui.composables.CustomHeader
-import com.github.skydoves.colorpicker.compose.AlphaTile
-import com.github.skydoves.colorpicker.compose.HsvColorPicker
-import com.github.skydoves.colorpicker.compose.rememberColorPickerController
+import com.example.arduino_led_app.ui.composables.CustomSwitch
 
 @Composable
 fun RainbowScreen(
 )
 {
-    val controller = rememberColorPickerController()
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.Center,
+        verticalAlignment = Alignment.CenterVertically
+    )
+    {
+        CustomHeader(text = "Rainbow", imageVector = Icons.Filled.Animation)
 
+    }
 
     Column(
         modifier = Modifier
             .fillMaxSize()
             .padding(all = 30.dp)
     ) {
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.Center,
-            verticalAlignment = Alignment.CenterVertically
-        )
+        Spacer(modifier = Modifier.height(40.dp))
+        Box()
         {
-            CustomHeader(text = "Rainbow", imageVector = Icons.Filled.Animation)
+            Image(
+                painter = painterResource(id = R.drawable.ic_rainbow_no_background),
+                contentDescription = null,
+                modifier = Modifier.fillMaxWidth()
+            )
         }
 
-        HsvColorPicker(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(450.dp)
-                .padding(10.dp),
-            controller = controller,
-            onColorChanged = {
-                val (red, green, blue) = it.color.toRgbInt()
-                Log.d("Color", "Red: $red,Green: $green,Blue: $blue,")
-            }
-
-        )
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.Center,
             verticalAlignment = Alignment.CenterVertically
         ) {
-
-            AlphaTile(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(60.dp)
-                    .clip(RoundedCornerShape(6.dp)),
-                controller = controller
-            )
+            CustomSwitch(description = "Destination", colorDifference = false, leftIcon = Icons.Filled.ArrowLeft,  rightIcon = Icons.Filled.ArrowRight)
+        }
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.Center,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            CustomSwitch(description = "Pulse")
         }
     }
 

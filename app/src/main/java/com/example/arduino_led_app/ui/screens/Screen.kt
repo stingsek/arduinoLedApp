@@ -7,4 +7,5 @@ sealed class Screen(val route: String) {
     data object ColorChooserScreen: Screen("Color")
     data object RainbowScreen: Screen("Rainbow")
     data object SettingsScreen: Screen("Settings")
+    data object AppInfoScreen: Screen(route = "Info")
 }

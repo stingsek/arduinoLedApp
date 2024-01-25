@@ -17,9 +17,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.input.pointer.PointerIcon.Companion.Text
 import androidx.compose.ui.unit.dp
 import com.example.arduino_led_app.ui.composables.CustomHeader
+import com.example.arduino_led_app.ui.composables.CustomSwitch
 import com.github.skydoves.colorpicker.compose.AlphaTile
 import com.github.skydoves.colorpicker.compose.HsvColorPicker
 import com.github.skydoves.colorpicker.compose.rememberColorPickerController
@@ -30,25 +30,25 @@ fun ColorChooserScreen(
 {
     val controller = rememberColorPickerController()
 
-
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.Center,
+        verticalAlignment = Alignment.CenterVertically
+    )
+    {
+        CustomHeader(text = "Choose Color", imageVector = Icons.Filled.ColorLens)
+    }
     Column(
         modifier = Modifier
             .fillMaxSize()
             .padding(all = 30.dp)
     ) {
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.Center,
-            verticalAlignment = Alignment.CenterVertically
-        )
-        {
-            CustomHeader(text = "Choose Color", imageVector = Icons.Filled.ColorLens)
-        }
+
 
         HsvColorPicker(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(450.dp)
+                .height(430.dp)
                 .padding(10.dp),
             controller = controller,
             onColorChanged = {
@@ -66,12 +66,22 @@ fun ColorChooserScreen(
             AlphaTile(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(60.dp)
-                    .clip(RoundedCornerShape(6.dp)),
+                    .height(20.dp)
+                    .clip(RoundedCornerShape(12.dp)),
                 controller = controller
             )
         }
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.Center,
+            verticalAlignment = Alignment.CenterVertically
+        )
+        {
+            CustomSwitch(description = "Pulse")
+        }
+
     }
+
 
 
 }
