@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.RadioButton
-import androidx.compose.material3.RadioButtonColors
 import androidx.compose.material3.RadioButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -20,7 +19,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.arduino_led_app.ui.theme.Orange
-import com.example.arduino_led_app.ui.theme.RedOrange
 
 @Composable
 fun CustomRadioButtons(onRadioButtonSelected: (String) -> Unit) {
@@ -36,7 +34,7 @@ fun CustomRadioButtons(onRadioButtonSelected: (String) -> Unit) {
     val radioButtonScale = 1.5f  // Scale factor for RadioButton
     val textSize = 18.sp  // Text size
 
-    radioButtons.forEachIndexed { index, info ->
+    radioButtons.forEachIndexed { _, info ->
         Row(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Center,

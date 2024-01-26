@@ -2,22 +2,11 @@ package com.example.arduino_led_app.ui.composables
 
 import android.graphics.Shader
 import androidx.compose.foundation.Canvas
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.material3.Switch
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.Brush
-import androidx.compose.ui.graphics.Brush.Companion.linearGradient
-import androidx.compose.ui.graphics.LinearGradient
-import androidx.compose.ui.graphics.ShaderBrush
 import androidx.compose.ui.graphics.drawscope.drawIntoCanvas
 import androidx.compose.ui.graphics.nativeCanvas
 import androidx.compose.ui.graphics.toArgb
@@ -74,7 +63,7 @@ fun RainbowText(
 @Composable
 fun PreviewRainbowText() {
     RainbowText(
-        text = "Tęczowy Tekst",
+        text = "RAINBOW",
         textSize = 24.sp,
         modifier = Modifier.fillMaxWidth()
     )

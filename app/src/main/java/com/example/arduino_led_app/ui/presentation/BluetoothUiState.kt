@@ -1,4 +1,4 @@
-package com.example.arduino_led_app.presentation
+package com.example.arduino_led_app.ui.presentation
 
 import com.example.arduino_led_app.bluetooth.domain.BluetoothDevice
 
@@ -10,5 +10,4 @@ data class BluetoothUiState(
     val errorMessage: String? = null,
     val commands: List<String> = emptyList()
 
-) {
-}
+)

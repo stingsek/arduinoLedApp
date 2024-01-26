@@ -9,14 +9,6 @@ class CommandBuilder private constructor() {
         return appendSteeringCommands(commands.joinToString(separator = SteeringCommand.END.value))
     }
 
-//    fun buildCharArray(): CharArray {
-//        return buildString().toCharArray()
-//    }
-//
-//    fun buildByteArray(): ByteArray{
-//        return buildString().encodeToByteArray()
-//    }
-
     fun appendFunction(functionValue: FunctionValue): CommandBuilder {
         val command = parseVariable(VariablePrefix.FUNCTION, functionValue.value)
         commands.add(command)

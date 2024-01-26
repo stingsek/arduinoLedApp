@@ -4,7 +4,6 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.os.Build
-import androidx.bluetooth.BluetoothDevice
 
 class FoundDeviceReceiver(
     private val onDeviceFound: (android.bluetooth.BluetoothDevice) -> Unit

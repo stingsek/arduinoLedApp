@@ -22,9 +22,10 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.example.arduino_led_app.presentation.BluetoothViewModel
+import com.example.arduino_led_app.ui.presentation.BluetoothViewModel
 import com.example.arduino_led_app.ui.screens.BluetoothDiscoverScreen
 import com.example.arduino_led_app.ui.theme.ArduinoLedAppTheme
+import com.example.arduino_led_app.ui.theme.Orange
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -114,7 +115,7 @@ class MainActivity : ComponentActivity() {
                                 horizontalAlignment = Alignment.CenterHorizontally,
                                 verticalArrangement = Arrangement.Center
                             ) {
-                                CircularProgressIndicator()
+                                CircularProgressIndicator(color = Orange)
                                 Text(text = "Connecting...")
                             }
                         }

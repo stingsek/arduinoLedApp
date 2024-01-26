@@ -1,12 +1,10 @@
-package com.example.arduino_led_app.presentation
+package com.example.arduino_led_app.ui.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.arduino_led_app.bluetooth.BluetoothDeviceDomain
 import com.example.arduino_led_app.bluetooth.domain.BluetoothController
-import com.example.arduino_led_app.bluetooth.domain.BluetoothDevice
 import com.example.arduino_led_app.bluetooth.domain.ConnectionResult
-import com.example.arduino_led_app.presentation.BluetoothUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.Flow

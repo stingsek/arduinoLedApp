@@ -14,11 +14,9 @@ import androidx.compose.material3.SliderDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableIntState
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -27,6 +25,8 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.arduino_led_app.ui.theme.Orange
+import com.example.arduino_led_app.ui.theme.RedOrange
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -38,7 +38,7 @@ fun CustomSlider(imageVector: ImageVector, textAbove: String, currentPosition: (
         modifier = Modifier.padding(horizontal = 10.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Text(text = "$textAbove: ${sliderPosition.toInt().toString()}",
+        Text(text = "$textAbove: ${sliderPosition.toInt()}",
             modifier = Modifier.align(
             Alignment.Start,
         ),
@@ -49,7 +49,7 @@ fun CustomSlider(imageVector: ImageVector, textAbove: String, currentPosition: (
             Icon(
                 imageVector = imageVector,
                 contentDescription = "Bluetooth Icon",
-                tint = Color(0xFFFA5237),
+                tint = RedOrange,
                 modifier = Modifier
                     .size(32.dp)
                     .align(Alignment.CenterVertically)
@@ -59,9 +59,9 @@ fun CustomSlider(imageVector: ImageVector, textAbove: String, currentPosition: (
                 onValueChange = { sliderPosition = it },
                 valueRange = 0f..100f,
                 colors = SliderDefaults.colors(
-                    thumbColor = Color(0xFFFA5237),
-                    activeTrackColor = Color(0xFFFC7331),
-                    inactiveTrackColor = Color(0xFF000000)
+                    thumbColor = RedOrange,
+                    activeTrackColor = Orange,
+                    inactiveTrackColor = Color.Black
 
                 ),
                 steps = 99,
@@ -73,7 +73,7 @@ fun CustomSlider(imageVector: ImageVector, textAbove: String, currentPosition: (
                         imageVector = Icons.Filled.Circle,
                         contentDescription = null,
                         modifier = Modifier.size(ButtonDefaults.IconSize),
-                        tint = Color(0xFFFA5237),
+                        tint = RedOrange,
                     )
                 }
             )

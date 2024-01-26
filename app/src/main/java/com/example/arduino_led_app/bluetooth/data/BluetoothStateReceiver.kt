@@ -21,7 +21,7 @@ class BluetoothStateReceiver(
             intent?.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE)
         }
         when(intent?.action){
-            android.bluetooth.BluetoothDevice.ACTION_ACL_CONNECTED -> {
+            BluetoothDevice.ACTION_ACL_CONNECTED -> {
                 onStateChanged(true, device ?: return)
             }
             BluetoothDevice.ACTION_ACL_DISCONNECTED ->

@@ -16,20 +16,21 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.arduino_led_app.ui.theme.Orange
+import com.example.arduino_led_app.ui.theme.RedOrange
 
 @Composable
 fun CustomHeader(
     text: String, imageVector: ImageVector, iconVisible: Boolean = true, height: Dp = 80.dp,
     bottomDivider: @Composable () -> Unit = {
         Divider(
-            color = Color(0xFFFC7331),
+            color = Orange,
             thickness = 4.dp,
             modifier = Modifier.padding(horizontal = 8.dp)
         )
@@ -54,7 +55,7 @@ fun CustomHeader(
                 Icon(
                     imageVector = imageVector,
                     contentDescription = "Bluetooth Icon",
-                    tint = Color(0xFFFA5237),
+                    tint = RedOrange,
                     modifier = Modifier
                         .size(32.dp)
                         .align(Alignment.CenterVertically)
