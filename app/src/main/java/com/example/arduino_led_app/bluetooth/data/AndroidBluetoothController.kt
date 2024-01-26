@@ -8,8 +8,9 @@ import android.bluetooth.BluetoothServerSocket
 import android.bluetooth.BluetoothSocket
 import android.content.Context
 import android.content.IntentFilter
-import com.example.arduino_led_app.bluetooth.domain.BluetoothController
+import android.util.Log
 import com.example.arduino_led_app.bluetooth.BluetoothDeviceDomain
+import com.example.arduino_led_app.bluetooth.domain.BluetoothController
 import com.example.arduino_led_app.bluetooth.domain.ConnectionResult
 import com.example.arduino_led_app.utils.hasBluetoothConnectPermission
 import com.example.arduino_led_app.utils.hasBluetoothScanPermission
@@ -138,7 +139,7 @@ class AndroidBluetoothController(
                 currentClientSocket?.let {
                     currentServerSocket?.close()
                     val service = BluetoothDataTransferService(it)
-                    dataTransferService= service
+                    dataTransferService = service
                 }
             }
         }.onCompletion {
@@ -168,25 +169,40 @@ class AndroidBluetoothController(
                 throw SecurityException("No BLUETOOTH_CONNECT permission")
             }
 
-            currentClientSocket = bluetoothAdapter
-                ?.getRemoteDevice(device.address)
-                ?.createRfcommSocketToServiceRecord(
-                    UUID.fromString(SERVICE_UUID)
-                )
-            stopDiscovery()
+            if(bluetoothAdapter == null) {
+                Log.e("Bluetooth adapter", "Bluetooth adapter is null")
+            }
+            else if(bluetoothAdapter!!.getRemoteDevice(device.address) == null) {
+                Log.e("Bluetooth device", "Bluetooth device is null")
+            }
+            else {
+                currentClientSocket = bluetoothAdapter
+                    ?.getRemoteDevice("00:20:12:08:8C:5B")
+                    ?.createRfcommSocketToServiceRecord(
+                        UUID.fromString(SERVICE_UUID)
+                    )
+                stopDiscovery()
 
-            currentClientSocket?.let { socket ->
-                try {
-                    socket.connect()
-                    emit(ConnectionResult.ConnectionEstablished)
-                } catch(e: IOException) {
-                    socket.close()
-                    currentClientSocket = null
-                    emit(ConnectionResult.Error("Connection was interrupted"))
+                currentClientSocket?.let { socket ->
+                    Log.i("Bluetooth connect", "Connecting to " + device.address)
+                    var counter = 0
+                    do {
+                        try {
+                            socket.connect()
+                            dataTransferService = BluetoothDataTransferService(socket)
+                            emit(ConnectionResult.ConnectionEstablished)
+                        } catch(e: IOException) {
+                            Log.e("Connection error", e.toString())
+//                            socket.close()
+                            currentClientSocket = null
+                            emit(ConnectionResult.Error("Connection was interrupted"))
+                        }
+                        counter++
+                    } while(!socket.isConnected && counter < 10)
                 }
             }
         }.onCompletion {
-            closeConnection()
+//            closeConnection()
         }.flowOn(Dispatchers.IO)
     }
 
@@ -216,6 +232,6 @@ class AndroidBluetoothController(
     }
 
     companion object {
-        const val SERVICE_UUID = "27b7d1da-08c7-4505-a6d1-2459987e5e2d"
+        const val SERVICE_UUID = "00001101-0000-1000-8000-00805F9B34FB"
     }
 }

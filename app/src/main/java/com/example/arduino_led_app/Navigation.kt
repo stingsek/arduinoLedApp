@@ -28,11 +28,12 @@ fun Navigation(state: BluetoothUiState,
                onStartScan: () -> Unit,
                onStopScan: () -> Unit,
                onStartServer: () -> Unit,
-               onDeviceClick: (BluetoothDevice) -> Unit) {
+               onDeviceClick: (BluetoothDevice) -> Unit,
+               onSendClicked: (String) -> Unit) {
 
     val navController = rememberNavController()
 
-    NavHost(navController = navController, startDestination = Screen.SplashScreen.route) {
+    NavHost(navController = navController, startDestination = Screen.HomeScreen.route) {
         composable(route = Screen.SplashScreen.route) {
             SplashScreen(navController)
         }
@@ -52,7 +53,7 @@ fun Navigation(state: BluetoothUiState,
         }
         composable(route = Screen.HomeScreen.route)
         {
-            HomeScreen(navController)
+            HomeScreen(navController, onSendClicked)
         }
         composable(route = Screen.RainbowScreen.route){
             RainbowScreen()

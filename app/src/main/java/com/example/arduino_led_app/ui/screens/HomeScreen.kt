@@ -6,7 +6,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Animation
 import androidx.compose.material.icons.filled.ColorLens
 import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.outlined.Animation
 import androidx.compose.material.icons.outlined.ColorLens
@@ -27,21 +26,25 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import com.example.arduino_led_app.ui.composables.BottomNavigationItem
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.example.arduino_led_app.ui.composables.CustomHeader
+import com.example.arduino_led_app.ui.composables.ClearButton
 import com.example.arduino_led_app.ui.composables.SendButton
+import com.example.arduino_led_app.ui.theme.Orange
+import com.example.arduino_led_app.utils.command.CommandBuilder
+import com.example.arduino_led_app.utils.command.FunctionValue
 import kotlin.math.absoluteValue
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeScreen(navController: NavController) {
+fun HomeScreen(navController: NavController, onFABClicked: (String) -> Unit) {
 
     val items = listOf(
         BottomNavigationItem(
@@ -69,14 +72,40 @@ fun HomeScreen(navController: NavController) {
         mutableIntStateOf(0)
     }
 
+    val command = remember {
+        mutableStateOf("")
+    }
+
+    fun onCommandChange(newCommand : String)
+    {
+        command.value = newCommand
+    }
+
     Surface(
         color = MaterialTheme.colorScheme.background
     ) {
         Scaffold(
-            floatingActionButton = { if (selectedItemIndex.absoluteValue != 0) SendButton() },
+            floatingActionButton = { if (selectedItemIndex.absoluteValue != 0) SendButton {
+                if(command.value.isNotEmpty())
+                {
+                    onFABClicked(
+                        command.value
+                    )
+                }
+
+            }
+            else{
+                ClearButton{
+                    onFABClicked(
+                        buildClearCommand()
+                    )
+
+                }
+            }
+            },
             floatingActionButtonPosition = FabPosition.End,
             bottomBar = {
-                NavigationBar(containerColor = Color(0xFFFC7331)) {
+                NavigationBar(containerColor = Orange) {
                     items.forEachIndexed { index, item ->
                         NavigationBarItem(
                             colors = NavigationBarItemDefaults.colors(
@@ -122,13 +151,13 @@ fun HomeScreen(navController: NavController) {
         { innerPadding ->
             when (items[selectedItemIndex].title) {
                 "Color" -> {
-                    ColorChooserScreen()
+                    ColorChooserScreen { onCommandChange(it) }
                 }
                 "Rainbow" -> {
-                    RainbowScreen()
+                    RainbowScreen { onCommandChange(it) }
                 }
                 "Settings" -> {
-                    SettingsScreen()
+                    SettingsScreen { onCommandChange(it) }
                 }
                 else ->
                 {
@@ -140,6 +169,17 @@ fun HomeScreen(navController: NavController) {
 
         }
     }
+}
+
+private fun buildClearCommand(): String
+{
+    return CommandBuilder.instance.apply {
+        clearState()
+        appendFunction(FunctionValue.CLEAR)
+        appendBrightness(255)
+        appendWait(50)
+        appendRGB(0,0,0)
+    }.buildString()
 }
 
 

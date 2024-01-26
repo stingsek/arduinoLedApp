@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Circle
-import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -14,9 +13,12 @@ import androidx.compose.material3.Slider
 import androidx.compose.material3.SliderDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableIntState
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -28,9 +30,9 @@ import androidx.compose.ui.unit.sp
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CustomSlider(imageVector: ImageVector,textAbove: String) {
+fun CustomSlider(imageVector: ImageVector, textAbove: String, currentPosition: (MutableIntState)) {
 
-    var sliderPosition by remember { mutableStateOf(0f) }
+    var sliderPosition by remember { mutableFloatStateOf(0f) }
 
     Column(
         modifier = Modifier.padding(horizontal = 10.dp),
@@ -64,7 +66,7 @@ fun CustomSlider(imageVector: ImageVector,textAbove: String) {
                 ),
                 steps = 99,
                 onValueChangeFinished = {
-                    //viewModel.updateSelectedSliderValue(sliderPosition)
+                    currentPosition.intValue = sliderPosition.toInt()
                 },
                 thumb = {
                     Icon(
