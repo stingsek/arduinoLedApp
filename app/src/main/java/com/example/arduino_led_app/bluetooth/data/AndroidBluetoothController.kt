@@ -179,11 +179,12 @@ class AndroidBluetoothController(
                 currentClientSocket = bluetoothAdapter
                     ?.getRemoteDevice("00:20:12:08:8C:5B")
                     ?.createRfcommSocketToServiceRecord(
-                        UUID.fromString(device.address)
+                        UUID.fromString(SERVICE_UUID)
                     )
                 stopDiscovery()
 
                 currentClientSocket?.let { socket ->
+                    Log.i("Bluetooth connect", "Connecting to " + device.address)
                     var counter = 0
                     do {
                         try {
@@ -192,11 +193,11 @@ class AndroidBluetoothController(
                             emit(ConnectionResult.ConnectionEstablished)
                         } catch(e: IOException) {
                             Log.e("Connection error", e.toString())
-                            socket.close()
+//                            socket.close()
                             currentClientSocket = null
                             emit(ConnectionResult.Error("Connection was interrupted"))
-                            counter++
                         }
+                        counter++
                     } while(!socket.isConnected && counter < 10)
                 }
             }
@@ -231,6 +232,6 @@ class AndroidBluetoothController(
     }
 
     companion object {
-        const val SERVICE_UUID = "27b7d1da-08c7-4505-a6d1-2459987e5e2d"
+        const val SERVICE_UUID = "00001101-0000-1000-8000-00805F9B34FB"
     }
 }
