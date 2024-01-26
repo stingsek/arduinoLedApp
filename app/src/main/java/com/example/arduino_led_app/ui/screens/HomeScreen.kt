@@ -6,6 +6,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Animation
 import androidx.compose.material.icons.filled.ColorLens
 import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.outlined.Animation
 import androidx.compose.material.icons.outlined.ColorLens
@@ -33,8 +34,10 @@ import androidx.compose.runtime.setValue
 import com.example.arduino_led_app.ui.composables.BottomNavigationItem
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.arduino_led_app.ui.composables.ClearButton
+import com.example.arduino_led_app.ui.composables.CustomHeader
 import com.example.arduino_led_app.ui.composables.SendButton
 import com.example.arduino_led_app.ui.theme.Orange
 import com.example.arduino_led_app.utils.command.CommandBuilder
