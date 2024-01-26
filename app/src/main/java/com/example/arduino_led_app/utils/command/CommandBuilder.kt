@@ -23,9 +23,21 @@ class CommandBuilder private constructor() {
         return this
     }
 
+
     private fun appendVariable(variablePrefix: VariablePrefix, value: Int): CommandBuilder {
         val command = parseVariable(variablePrefix, value)
         commands.add(command)
+        return this
+    }
+
+    fun appendWait(value: Int): CommandBuilder{
+        appendVariable(VariablePrefix.WAIT,value)
+        return this
+    }
+
+    fun appendBrightness(value: Int): CommandBuilder
+    {
+        appendVariable(VariablePrefix.BRIGHTNESS,value)
         return this
     }
 
@@ -53,7 +65,7 @@ class CommandBuilder private constructor() {
         return String.format("%03d", num)
     }
 
-    fun clear()
+    fun clearState()
     {
         commands.clear()
     }

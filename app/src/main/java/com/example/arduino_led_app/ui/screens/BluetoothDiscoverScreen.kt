@@ -28,6 +28,7 @@ import androidx.compose.material.icons.filled.Bluetooth
 import androidx.compose.material3.Icon
 import androidx.compose.ui.Alignment
 import com.example.arduino_led_app.ui.composables.CustomHeader
+import com.example.arduino_led_app.ui.theme.RedOrange
 
 @Composable
 fun BluetoothDiscoverScreen(
@@ -37,7 +38,7 @@ fun BluetoothDiscoverScreen(
     onStartServer: () -> Unit,
     onDeviceClick: (BluetoothDevice) -> Unit
 ) {
-    val buttonColor = ButtonDefaults.buttonColors(containerColor = Color(0xFFFA5237))
+    val buttonColor = ButtonDefaults.buttonColors(containerColor = RedOrange)
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -109,7 +110,7 @@ fun BluetoothDeviceItem(
         Row(modifier = Modifier.padding(16.dp), verticalAlignment = Alignment.CenterVertically) {
             Icon(
                 imageVector = Icons.Filled.Bluetooth,
-                contentDescription = "Ikona Bluetooth"
+                contentDescription = "Bluetooth Icon"
             )
             Spacer(modifier = Modifier.width(8.dp))
             Text(

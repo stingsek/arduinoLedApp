@@ -12,8 +12,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Animation
-import androidx.compose.material.icons.filled.ArrowLeft
-import androidx.compose.material.icons.filled.ArrowRight
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
@@ -25,19 +23,18 @@ import androidx.compose.ui.unit.dp
 import com.example.arduino_led_app.R
 import com.example.arduino_led_app.ui.composables.CustomHeader
 import com.example.arduino_led_app.ui.composables.CustomRadioButtons
-import com.example.arduino_led_app.ui.composables.CustomSwitch
 import com.example.arduino_led_app.utils.command.CommandBuilder
 import com.example.arduino_led_app.utils.command.FunctionValue
+
+enum class Animation {
+    Left, Right, Pulse, None
+}
 
 @Composable
 fun RainbowScreen(onCommandChange: (String) -> Unit = {}
 ) {
-    val direction = remember {
-        mutableStateOf(false) // false -> left, true -> right
-    }
-    val pulse = remember {
-        mutableStateOf(false)
-    }
+    val selectedAnimation = remember { mutableStateOf(Animation.None) }
+
 
     Row(
         modifier = Modifier.fillMaxWidth(),
@@ -46,7 +43,6 @@ fun RainbowScreen(onCommandChange: (String) -> Unit = {}
     )
     {
         CustomHeader(text = "Rainbow", imageVector = Icons.Filled.Animation)
-
     }
 
     Column(
@@ -71,29 +67,34 @@ fun RainbowScreen(onCommandChange: (String) -> Unit = {}
         )
         {
             CustomRadioButtons { selectedText ->
-                when (selectedText) {
-                    "Left" -> Unit
-                    "Right" -> Unit
-                    "Pulse" -> Unit
-                    else -> Unit
+                selectedAnimation.value = when (selectedText) {
+                    "Left" -> Animation.Left
+                    "Right" -> Animation.Right
+                    "Pulse" -> Animation.Pulse
+                    else -> Animation.None
                 }
             }
         }
+        onCommandChange(buildCommandToSend(selectedAnimation.value))
 
-        LaunchedEffect(pulse.value, direction.value)
+        LaunchedEffect(selectedAnimation)
         {
-//        onCommandChange(buildCommandToSend(direction.value, pulse.value))
+        onCommandChange(buildCommandToSend(selectedAnimation.value))
         }
-
 
     }
 
 }
-    private fun buildCommandToSend(direction: Boolean, pulse: Boolean): String {
+    private fun buildCommandToSend(animation: Animation): String {
         return CommandBuilder.instance.apply {
-            clear()
-            if (pulse) {
-                appendFunction(FunctionValue.PULSE)
-            }
+            clearState()
+            appendFunction(
+                when(animation) {
+                    Animation.Pulse -> FunctionValue.PULSE_RAINBOW
+                    Animation.Right -> FunctionValue.RAINBOW_RIGHT
+                    Animation.Left -> FunctionValue.RAINBOW_LEFT
+                    else -> FunctionValue.RAINBOW_LEFT
+                }
+            )
         }.buildString()
     }

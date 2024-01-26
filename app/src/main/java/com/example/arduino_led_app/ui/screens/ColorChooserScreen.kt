@@ -93,7 +93,7 @@ fun ColorChooserScreen(onCommandChange: (String) -> Unit = {}) {
 private fun buildCommandToSend(r: Int, g: Int, b : Int, pulse: Boolean): String
 {
     return CommandBuilder.instance.apply {
-        clear()
+        clearState()
         appendFunction(if (pulse) FunctionValue.PULSE else FunctionValue.FILL)
         appendRGB(r, g, b)
     }.buildString()
