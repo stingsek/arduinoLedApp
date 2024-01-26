@@ -15,18 +15,30 @@ import androidx.compose.material.icons.filled.Animation
 import androidx.compose.material.icons.filled.ArrowLeft
 import androidx.compose.material.icons.filled.ArrowRight
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.example.arduino_led_app.R
 import com.example.arduino_led_app.ui.composables.CustomHeader
+import com.example.arduino_led_app.ui.composables.CustomRadioButtons
 import com.example.arduino_led_app.ui.composables.CustomSwitch
+import com.example.arduino_led_app.utils.command.CommandBuilder
+import com.example.arduino_led_app.utils.command.FunctionValue
 
 @Composable
 fun RainbowScreen(onCommandChange: (String) -> Unit = {}
-)
-{
+) {
+    val direction = remember {
+        mutableStateOf(false) // false -> left, true -> right
+    }
+    val pulse = remember {
+        mutableStateOf(false)
+    }
+
     Row(
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.Center,
@@ -51,22 +63,37 @@ fun RainbowScreen(onCommandChange: (String) -> Unit = {}
                 modifier = Modifier.fillMaxWidth()
             )
         }
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(all = 30.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
+        )
+        {
+            CustomRadioButtons { selectedText ->
+                when (selectedText) {
+                    "Left" -> Unit
+                    "Right" -> Unit
+                    "Pulse" -> Unit
+                    else -> Unit
+                }
+            }
+        }
 
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.Center,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            CustomSwitch(description = "Destination", colorDifference = false, leftIcon = Icons.Filled.ArrowLeft,  rightIcon = Icons.Filled.ArrowRight)
+        LaunchedEffect(pulse.value, direction.value)
+        {
+//        onCommandChange(buildCommandToSend(direction.value, pulse.value))
         }
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.Center,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            CustomSwitch(description = "Pulse")
-        }
+
+
     }
 
-
 }
+    private fun buildCommandToSend(direction: Boolean, pulse: Boolean): String {
+        return CommandBuilder.instance.apply {
+            clear()
+            if (pulse) {
+                appendFunction(FunctionValue.PULSE)
+            }
+        }.buildString()
+    }

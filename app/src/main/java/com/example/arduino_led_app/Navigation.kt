@@ -33,7 +33,7 @@ fun Navigation(state: BluetoothUiState,
 
     val navController = rememberNavController()
 
-    NavHost(navController = navController, startDestination = Screen.SplashScreen.route) {
+    NavHost(navController = navController, startDestination = Screen.HomeScreen.route) {
         composable(route = Screen.SplashScreen.route) {
             SplashScreen(navController)
         }

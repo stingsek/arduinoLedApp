@@ -139,7 +139,7 @@ class AndroidBluetoothController(
                 currentClientSocket?.let {
                     currentServerSocket?.close()
                     val service = BluetoothDataTransferService(it)
-                    dataTransferService= service
+                    dataTransferService = service
                 }
             }
         }.onCompletion {

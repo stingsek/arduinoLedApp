@@ -20,8 +20,5 @@ class BluetoothDataTransferService(
             true
         }
 
-
-
-
     }
 }

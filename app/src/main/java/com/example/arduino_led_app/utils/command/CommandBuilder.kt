@@ -1,21 +1,21 @@
 package com.example.arduino_led_app.utils.command
 
-class CommandBuilder {
+class CommandBuilder private constructor() {
 
-    private val commands: MutableList<String> = mutableListOf()
+    private var commands: MutableList<String> = mutableListOf()
 
-    private fun buildString(): String {
+    fun buildString(): String {
         val commands = commands.toMutableList()
         return appendSteeringCommands(commands.joinToString(separator = SteeringCommand.END.value))
     }
 
-    fun buildCharArray(): CharArray {
-        return buildString().toCharArray()
-    }
-
-    fun buildByteArray(): ByteArray{
-        return buildString().encodeToByteArray()
-    }
+//    fun buildCharArray(): CharArray {
+//        return buildString().toCharArray()
+//    }
+//
+//    fun buildByteArray(): ByteArray{
+//        return buildString().encodeToByteArray()
+//    }
 
     fun appendFunction(functionValue: FunctionValue): CommandBuilder {
         val command = parseVariable(VariablePrefix.FUNCTION, functionValue.value)
@@ -51,5 +51,14 @@ class CommandBuilder {
             throw IllegalArgumentException("Value must be less than $maxValue")
 
         return String.format("%03d", num)
+    }
+
+    fun clear()
+    {
+        commands.clear()
+    }
+
+    companion object {
+        val instance: CommandBuilder by lazy { CommandBuilder() }
     }
 }
