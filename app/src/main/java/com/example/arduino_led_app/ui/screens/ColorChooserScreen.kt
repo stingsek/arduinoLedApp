@@ -85,7 +85,7 @@ fun ColorChooserScreen(onCommandChange: (String) -> Unit = {}) {
 
     LaunchedEffect(pulse.value, controller.selectedColor.value) {
         val (red, green, blue) = controller.selectedColor.value.toRgbInt()
-        // onCommandChange(buildCommandToSend(red, green, blue, pulse.value))
+        onCommandChange(buildCommandToSend(red, green, blue, pulse.value))
     }
 }
 
