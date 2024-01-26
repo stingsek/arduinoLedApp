@@ -35,8 +35,6 @@
 - Check if the LED strip is properly connected to the Arduino.
 - Make sure the Android device is within the Bluetooth module's range.
 
-## License
-[Specify the license, if applicable]
 
 ## Compatibility
 - compatible arduino repo: https://github.com/lukcyn/ArduinoLedController.git
